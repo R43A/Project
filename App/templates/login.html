@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <title>login</title>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row no-gutter">
+      <!-- The image half -->
+      <div class="col-md-6 d-none d-md-flex bg-image"></div>
+
+      <!-- The content half -->
+      <div class="col-md-6 bg-light">
+        <div class="login d-flex align-items-center py-5">
+
+          <!-- Demo content-->
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-10 col-xl-7 mx-auto">
+
+                <h3 class="display-3">Log in</h3>
+                <p class="text-muted mb-4 lead"><a href="{%url 'signup' %}">Create an account</a></p>
+
+                <form method="POST">
+                  {% csrf_token %}
+
+                  <div class="form-group mb-3">
+                    <input id="inputEmail" type="email" name="email" placeholder="Email address" required=""
+                      autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4">
+                  </div>
+                  <div class="form-group mb-3 position-relative">
+                    <input id="inputPassword" type="password" name="password" placeholder="Password" required=""
+                      class="form-control rounded-pill border-0 shadow-sm px-4">
+                    <span toggle="#inputPassword" class="eye-icon field-icon toggle-password">
+                      <i class="fa fa-eye toggle-password" style="color: white;"></i>
+                    </span>
+                  </div>
+
+                  <div class="custom-control custom-checkbox mb-3">
+                    <input id="rememberPassword" name="rememberPassword" type="checkbox" checked class="custom-control-input" checked>
+                    <label for="customCheck1" class="custom-control-label" style="color: #dddddd;">Remember password</label>
+                  </div>
+
+                  <button type="submit" id="loginButton"
+                    class="btn btn-primary btn-block mb-2 rounded-pill shadow-sm">Login</button>
+
+                  <div class="text-center d-flex justify-content-center">
+                    <p class="text-muted mb-4 lead"><a href="#">Forgot Password</a></p>
+                  </div>
+
+                  {% if messages %}
+                  <ul class="messages" style=" font-size: 11px;
+                  color: #506e72;
+                  display: flex;
+                  justify-content: center;
+                  margin-right: 22px;">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                      {% endfor %}
+                  </ul>
+                  {% endif %}
+
+                </form>
+              </div>
+
+              <!-- horizontal line -->
+              <div style="text-align: center; margin-top: -3px;">
+                <hr style="width: 20vh; display: inline-block; margin-right: 10px; margin-bottom: 4px;">
+                <span style="font-weight: bold; margin: 0;">or</span>
+                <hr style="width: 20vh; display: inline-block; margin-left: 10px; margin-bottom: 4px;">
+              </div>
+
+              <!-- socials signup/login link -->
+              <div class="d-flex justify-content-center text-center pt-1" style="margin-top: 19px;">
+                <a href="#!" class="text-white">
+                  <i class="fab fa-facebook-f fa-lg facebook-icon"></i>
+                </a>
+                <a href="#!" class="text-white">
+                  <i class="fab fa-twitter fa-lg mx-4 px-2 twitter-icon"></i>
+                </a>
+                <a href="#!" class="text-white">
+                  <i class="fab fa-google fa-lg google-icon"></i>
+                </a>
+              </div>
+
+            </div>
+          </div><!-- End -->
+
+        </div>
+      </div><!-- End -->
+
+      <div class="col-img">
+        <img src="{% static 'Images/Plumpn.png' %}" alt="">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Check if the "Remember password" checkbox is checked
+      const rememberPasswordCheckbox = document.getElementById("rememberPassword");
+      const emailInput = document.getElementById("inputEmail");
+      const passwordInput = document.getElementById("inputPassword");
+  
+      // Try to retrieve saved email and password from local storage
+      const savedEmail = localStorage.getItem("savedEmail");
+      const savedPassword = localStorage.getItem("savedPassword");
+  
+      // If email and password are saved, pre-fill the input fields
+      if (savedEmail && savedPassword) {
+        emailInput.value = savedEmail;
+        passwordInput.value = savedPassword;
+      }
+  
+      // Add an event listener to the login form submission
+      const loginForm = document.querySelector("form");
+      loginForm.addEventListener("submit", function() {
+        // Check if the "Remember password" checkbox is checked
+        if (rememberPasswordCheckbox.checked) {
+          // Save the email and password to local storage
+          localStorage.setItem("savedEmail", emailInput.value);
+          localStorage.setItem("savedPassword", passwordInput.value);
+        } else {
+          // If the checkbox is not checked, clear saved email and password
+          localStorage.removeItem("savedEmail");
+          localStorage.removeItem("savedPassword");
+        }
+      });
+    });
+  </script>
+  
+</body>
+
+</html>

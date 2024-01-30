@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+    <title>Profile</title>
+</head>
+
+<body>
+
+    <!-- Just an image -->
+    <nav class="navbar navbar-light">
+        <!-- Create a container for the logo and search bar -->
+        <div class="logo-search-container" style="width: 0; margin-top: 10px;">
+            <!-- Add a button/icon to toggle the sidebar -->
+            <button id="sidebarToggle" class="btn btn-dark d-md-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <!-- Add the logo -->
+            <div class="logo" style="margin-left: 43px; margin-right: 16px;"><a href="{% url 'home' %}"><img
+                        src="{% static 'images/Plumpn.png' %}" alt=""></a>
+            </div>
+
+            <!-- Add the search bar -->
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+
+            <!-- Add notification, upload video, and live links (only show when user is authenticated) -->
+            <div class="links">
+                <a href="#" class="video"><i class="fas fa-circle-notch"></i>Start stream</a>
+                <a href="#" class="bell"><i class="fas fa-bell"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="center-content">
+        <!-- Banner Image Section -->
+        <div class="profile-banner">
+            <div id="banner-overlay" class="banner-overlay">
+            </div>
+            <div id="banner-preview" class="banner-preview">
+                {% if profile.banner_image %}
+                <img src="{{ profile.banner_image.url }}" alt="" class="banner-image">
+                {% else %}
+                <p></p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Profile Image Section -->
+        <div class="profile-image-container">
+            <div id="profile-overlay" class="profile-overlay">
+            </div>
+            <div id="profile-preview" class="profile-preview">
+                {% if profile.profile_image %}
+                <img src="{{ profile.profile_image.url }}" alt="" class="profile-image">
+                {% else %}
+                <i class="fas fa-user fa-5x" id="profile-icon-preview"></i>
+                {% endif %}
+            </div>
+        </div>
+
+
+
+
+        <div class="pr-ctn">
+
+            <p class="pr-inf">{{ user.full_name }}</p>
+            <p class="pr-inf" style="font-weight: 400; margin-bottom: 25px;">{{ user.username }}</p>
+            <!-- <p class="pr-inf">{{ user.email }}</p> -->
+            <div class="user-website">{% if profile.website_link %}<a href="{{ profile.website_link }}" target="_blank"
+                    style="text-decoration: none; color: #2d89bb;">{{ profile.website_link}}</a>
+                {% else %}
+                <!-- Display some message or leave it empty if there is no website link -->
+                {% endif %}
+            </div>
+
+            <p class="pr-inf" style="font-weight: 400; word-wrap: break-word; max-width: 500px">{{profile.bio }}</p>
+            <p class="pr-inf" style="margin-top: 7px;">Joined: {{ user.date_joined|date:"F d, Y" }}</p>
+
+            <!-- Edit Profile Popup -->
+            <div id="editProfilePopup" class="popup">
+                <div class="popup-content">
+                    <h2 style="color: #626262;">Edit Profile</h2>
+                    <!-- Add your edit profile form here -->
+                    <form id="profileForm" method="POST" action="{% url 'profile' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- Form fields go here -->
+
+                        <!-- Banner Image Section -->
+                        <div class="profile-banner">
+                            <div id="banner-overlay" class="banner-overlay">
+                                <label for="banner-upload" class="upload-label">
+                                    <i class="fas fa-pen"></i> Edit Banner
+                                </label>
+
+                                <!-- Delete Banner Image Button with Delete Icon -->
+                                <button type="button" class="delete-btn upload-label"
+                                    style="outline: none; border: none; margin-right: 85px"
+                                    onclick="deleteBannerImage()">
+                                    <i class="fas fa-trash"></i></button>
+
+                            </div>
+                            <input type="file" id="banner-upload" name="banner_image" accept="image/*"
+                                onchange="previewBannerImage(this)" style="display: none;">
+                            <div id="banner-preview" class="mdl-banner-preview">
+                                {% if profile.banner_image %}
+                                <img src="{{ profile.banner_image.url }}" id="banner-image-preview" alt="Banner Image">
+                                {% else %}
+                                <img src="/static/placeholder.jpg" id="banner-image-preview" alt="Placeholder Image"
+                                    style="display: none;">
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Profile Image Section -->
+                        <div class="mdl-profile-image-container">
+                            <div id="profile-overlay" class="profile-overlay">
+                                <label for="profile-upload" class="upload-label" style="font-size: 10px;
+                        right: 9px;
+                        bottom: 21px;
+                        padding: 5px 7px;">
+                                    <i class="fas fa-pen"></i>
+                                </label>
+
+                                <button type="button" class="delete-btn upload-label"
+                                    style="border: none; padding: 5px 9px; margin-right: 27px; margin-bottom: 16px;"
+                                    onclick="deleteProfilePicture()">
+                                    <i class="fas fa-trash"></i></button>
+                            </div>
+
+                            <input type="file" id="profile-upload" name="profile_image" accept="image/*"
+                                onchange="previewProfileImage(this)" style="display: none;">
+                            <div id="profile-preview" class="mdl-profile-preview">
+                                {% if profile.profile_image %}
+                                <img src="{{ profile.profile_image.url }}" class="image-preview"
+                                    id="profile-image-preview" alt="Profile Picture">
+                                {% else %}
+                                <img src="{/static/placeholder.jpg}" class="image-preview" id="profile-image-preview"
+                                    style="display: none;">
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <input id="inputName" type="text" name="full_name" placeholder="Full Name" autofocus=""
+                                value="{{ user.full_name }}">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <input id="inputUsername" type="username" name="username" placeholder="Username"
+                                autofocus="" value="{{ user.username }}">
+                            <span id="usernameError" class="error-message" style="color: #be6060;
+                        float: right;
+                        margin-top: -32px;
+                        /* font-weight: 500; */
+                        font-size: 12px;"></span>
+
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <input id="inputEmail" type="email" name="email" placeholder="Email address" autofocus=""
+                                value="{{ user.email }}">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" id="websiteLink" name="websiteLink" placeholder="Enter your website link"
+                                style="margin-bottom: 16px;" value="{{ profile.website_link }}">
+                        </div>
+
+                        <textarea style="resize: none;" id="bio" name="bio"
+                            placeholder="Bio">{{ profile.bio }}</textarea><br><br>
+                        <button class="mdl-btn-sv" type="submit">Save</button>
+                        <button class="mdl-btn-cl" type="button" onclick="closeEditProfilePopup()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <button class="pr-mdl" onclick="openEditProfilePopup()">Edit Profile</button>
+
+
+
+
+        <!-- Add this section after your profile information -->
+        <div class="profile-tabs">
+            <button class="tab-button active" onclick="showTab('posts')">Activity</button>
+            <button class="tab-button" onclick="showTab('follower')">Following</button>
+            <button class="tab-button" onclick="showTab('liked')">Liked</button>
+        </div>
+
+        <div class="tab-content" id="posts">
+            <!-- Content for the "Posts" tab goes here -->
+            <h5 class="pr-head">Latest Post</h5>
+            <div class="post pfl">
+                <div class="ct-txt">This is post</div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="follower" style="display: none;">
+            <!-- Content for the "Media" tab goes here -->
+            <h5 class="pr-head">Following</h5>
+            <div class="follower pfl">
+                <div class="ct-txt">follower content here.</div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="liked" style="display: none;">
+            <!-- Content for the "Likes" tab goes here -->
+            <h5 class="pr-head">Liked</h5>
+            <div class="like pfl">
+                <div class="ct-txt">Liked content here.</div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Sidebar -->
+    <nav id="sidebar" class="col-md-2 d-md-block bg-light sidebar">
+        <div class="position-sticky">
+            <div class="logo">
+                <a href="{% url 'home' %}"><img src="{% static 'images/Plumpn.png' %}" alt=""></a>
+            </div>
+
+            <span>More</span>
+            <div class="menu">
+                <a href="#" class="item" id="news-feed" data-menu="home">
+                    <i class="fas fa-home" style="padding: 0px 20px 0px 30px;"></i> Browse
+                </a>
+                <a href="#" class="item">
+                    <i class="fas fa-fire" style="padding: 0px 20px 0px 30px;"></i> Trending
+                </a>
+            </div>
+
+            <span>Social</span>
+            <div class="menu">
+                <a href="#" class="item">
+                    <i class="fas fa-layer-group" style="padding: 0px 20px 0px 30px;"></i> Following
+                </a>
+
+                {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="item" id="profile">
+                    <i class="fas fa-user" style="padding: 0px 20px 0px 30px;"></i> Profile
+                </a>
+                {% endif %}
+            </div>
+
+            <span>General</span>
+            <div class="menu">
+                <a href="#" class="item">
+                    <i class="fas fa-cog" style="padding: 0px 20px 0px 30px;"></i> Settings
+                </a>
+
+                {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="item">
+                    <i class="fas fa-sign-out-alt" style="padding: 0px 20px 0px 30px;"></i> Logout
+                </a>
+                {% else %}
+                <a href="{% url 'login' %}" class="item">
+                    <i class="fas fa-sign-in-alt" style="padding: 0px 20px 0px 30px;"></i> Login
+                </a>
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script>
+        function deleteBannerImage() {
+            console.log('deleteBannerImage called');
+            var bannerImagePreview = document.getElementById('banner-image-preview');
+            var bannerIconPreview = document.getElementById('banner-icon-preview');
+
+            // Check if the banner image exists
+            if (bannerImagePreview) {
+                bannerImagePreview.style.display = 'none'; // Hide the banner image
+            }
+            if (bannerIconPreview) {
+                bannerIconPreview.style.display = 'inline-block'; // Show the icon
+            }
+
+            // Send an AJAX request to delete the banner image on the server
+            fetch("{% url 'delete_banner_image' %}", {
+                method: "POST",
+                body: new URLSearchParams({
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    delete_banner_image: true,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log("Banner image deleted on the server.");
+                    } else {
+                        console.error("Failed to delete banner image on the server.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error deleting banner image:", error);
+                });
+        }
+    </script>
+
+    <script>
+        function deleteProfilePicture() {
+            console.log('deleteProfilePicture called');
+            var profileImagePreview = document.getElementById('profile-image-preview');
+
+            // Check if the profile picture exists
+            if (profileImagePreview) {
+                profileImagePreview.style.display = 'none'; // Hide the profile picture
+            }
+
+            // Send an AJAX request to delete the profile picture on the server
+            fetch("{% url 'delete_profile_picture' %}", {
+                method: "POST",
+                body: new URLSearchParams({
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    delete_profile_picture: true,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log("Profile picture deleted on the server.");
+                    } else {
+                        console.error("Failed to delete profile picture on the server.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error deleting profile picture:", error);
+                });
+        }
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            // Listen for keyup event on the username input
+            $("#inputUsername").keyup(function () {
+                // Get the entered username
+                var username = $(this).val();
+
+                // Check if the username contains spaces
+                if (username.includes(" ")) {
+                    // Display an error message
+                    $("#usernameError").text("Username cannot contain spaces.");
+                } else {
+                    // Clear the error message
+                    $("#usernameError").text("");
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Select the username input field
+            var usernameInput = $("#inputUsername");
+
+            // Select the error message element
+            var usernameError = $("#usernameError");
+
+            // Define a debounce function
+            function debounce(func, delay) {
+                var timeout;
+                return function () {
+                    var context = this,
+                        args = arguments;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function () {
+                        timeout = null;
+                        func.apply(context, args);
+                    }, delay);
+                };
+            }
+
+            // Function to check username availability
+            function checkUsernameAvailability() {
+                // Get the current value of the username input
+                var usernameValue = usernameInput.val();
+
+                // Send an AJAX request to check if the username exists
+                $.ajax({
+                    url: "/check_username_availability/",
+                    method: "GET",
+                    data: { username: usernameValue },
+                    success: function (data) {
+                        if (data.exists) {
+                            // Username exists, display an error message
+                            usernameError.text("Username already exists. Please choose a different username.");
+                        } else {
+                            // Username is available, clear the error message
+                            usernameError.text("");
+                        }
+                    },
+                    error: function () {
+                        // Handle AJAX error, if any
+                        console.error("Error checking username availability.");
+                    }
+                });
+            }
+
+            // Add an event listener for the username input field with debounce
+            usernameInput.on("input", debounce(checkUsernameAvailability, 300)); // Adjust the delay (in milliseconds) as needed
+        });
+
+    </script>
+
+</body>
+
+</html>

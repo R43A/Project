@@ -1,0 +1,465 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Roboto:wght@300&display=swap");
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #2e2e2e;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.navbar-light {
+    padding-bottom: 17px;
+    background: #2e2e2e;
+    filter: opacity();
+}
+
+.container {
+    margin-bottom: -22px;
+    overflow: hidden;
+}
+
+.login,
+.image {
+    min-height: 100vh;
+}
+
+.col-img img {
+    position: absolute;
+    top: 28px;
+    left: 0px;
+    margin-left: 33px;
+}
+
+@media (max-width: 767px) {
+    .col-img img {
+        height: 10vh;
+        margin: -10px 18px;
+    }
+}
+
+.bg-image {
+    background-image: url("../Images/axville-SXGVliZGS7I-unsplash.jpg");
+    background-size: cover;
+    background-position: center center;
+    filter: brightness(1);
+}
+
+.bg-light {
+    padding: 0;
+    color: #f1f1f1;
+    font-weight: 600;
+}
+
+.login {
+    background: #2e2e2e;
+}
+
+.col-lg-10 {
+    padding-left: 34px;
+    padding-right: 34px;
+}
+
+.mx-auto {
+    width: 65vh;
+}
+
+#websiteLink,
+#inputFirstname,
+#inputLastname,
+#inputUsername,
+#inputEmail,
+#inputPassword,
+#confirmPassword {
+    padding: 12px 0px;
+    background: #454545;
+    caret-color: #ffffff;
+    color: #e0e0e0;
+    border: none;
+    border-bottom: 1px solid #c8c8c8;
+    width: 100%;
+    outline: none;
+}
+
+#bio::placeholder,
+#websiteLink::placeholder,
+#inputFirstname::placeholder,
+#inputLastname::placeholder,
+#inputUsername::placeholder,
+#inputEmail::placeholder,
+#inputPassword::placeholder,
+#confirmPassword::placeholder {
+    color: #e0e0e0;
+}
+
+.text-muted a {
+    color: #afb3b7;
+    font-family: system-ui;
+    text-decoration: none;
+}
+
+.lead {
+    font-size: unset;
+}
+
+.text-muted a:hover {
+    color: #646464;
+}
+
+.btn {
+    width: 100%;
+    background: #202020;
+    border: none;
+    padding: 10px 0px;
+}
+
+.btn:hover {
+    background: #383838;
+}
+
+.btn:active {
+    background-color: #333333 !important;
+}
+
+/* Add CSS to position the eye icon inside the password field */
+.position-relative {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+/* Define the hover styles for Facebook */
+.facebook-icon:hover {
+    color: #2d5d9c;
+
+}
+
+/* Define the hover styles for Twitter */
+.twitter-icon:hover {
+    color: #7dc4f0;
+}
+
+/* Define the hover styles for Google */
+.google-icon:hover {
+    color: #aa4036;
+}
+
+/* Login and Signup Css end here */
+
+
+
+
+/* Homepage css start from here */
+/* Custom CSS for YouTube-like sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #373737 !important;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: transform 0.2s ease;
+    overflow-y: auto;
+}
+
+.sidebar .logo {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.sidebar .logo img {
+    height: 6vh;
+    margin-right: 148px;
+}
+
+.sidebar .menu {
+    padding: 10px 0px;
+}
+
+.sidebar .menu .item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0px;
+    color: #ebebeb;
+    text-decoration: none;
+    transition: background-color 0.2s ease, border-radius 0.2s ease;
+    font-weight: 400;
+    font-size: 13px;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+.sidebar .menu .item:hover {
+    background-color: #d6d6d669;
+    width: 100%;
+}
+
+/* Add a transition effect to make the link click feel responsive */
+.sidebar .menu .item:active {
+    background-color: #727272d2;
+    transition: 0.2s ease;
+    width: 100%;
+}
+
+.sidebar .menu .item:focus {
+    border-right: 5px solid #717171;
+    background-color: #94949444;
+    outline: none;
+}
+
+.content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+@media (min-width: 768px) {
+
+    /* Sidebar styles for desktop */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100%;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+    .content {
+        margin-left: 250px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -250px;
+        /* Initially hidden off-screen */
+        width: 250px;
+        height: 100%;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        transition: left 0.2s ease;
+        /* Smooth transition when toggled */
+        overflow-y: auto;
+    }
+
+    .content {
+        margin-left: 0;
+        /* Adjust the margin to 0 when sidebar is hidden */
+        padding: 20px;
+    }
+
+    /* Show the sidebar when the toggle button is clicked */
+    .sidebar.active {
+        left: 0;
+    }
+
+    /* Adjust content width when sidebar is shown */
+    .content.active {
+        margin-left: 250px;
+    }
+}
+
+span {
+    margin-left: 32px;
+    font-size: smaller;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+/* Add styles for the logo and search bar container */
+.logo-search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 10px; */
+}
+
+/* Style the logo */
+.logo img {
+    height: 6vh;
+}
+
+/* Style the search bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+@media (min-width: 767px) {
+    .search-bar {
+        display: flex;
+        align-items: center;
+        position: fixed;
+        left: 739px;
+    }
+}
+
+.search-bar input {
+    width: 31vh;
+    padding: 7px 7px;
+    margin-left: 9px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #585858;
+    font-size: small;
+    background: transparent;
+    color: #7e7e7e;
+}
+
+.search-bar button {
+    color: #666666;
+    border: none;
+    padding: 5px 13px;
+    cursor: pointer;
+    outline: none;
+    background: none;
+    position: relative;
+    right: 4px;
+    /* border-bottom: 1px solid #b1b1b1; */
+}
+
+/* Media query to hide the container in desktop mode */
+@media (min-width: 767px) {
+    .logo-search-container {
+        display: flex;
+    }
+
+    .search-bar input {
+        width: 41vh;
+        padding: 7px 6px;
+        margin-left: 214px;
+        outline: none;
+        /* border-radius: 0px; */
+        border: none;
+        border-bottom: 1px solid #585858;
+        font-size: small;
+        background: transparent;
+    }
+}
+
+
+/* Toggler Css */
+.d-md-none {
+    padding: 0;
+    width: 0;
+    margin-left: 31px;
+    color: #555555;
+}
+
+
+/* Search bar links css (upload, live, notification) */
+.links {
+    display: inline-flex;
+    float: right;
+    margin-left: 189px;
+}
+
+@media (max-width: 767px) {
+    .links {
+        display: inline-flex;
+        float: right;
+        margin-left: 4px;
+    }
+}
+
+.links a {
+    margin-right: 30px;
+    padding: 7px 12px;
+    color: #717171;
+    transition: .1s ease-in;
+}
+
+a.video {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 30px;
+    padding: 5px 18px;
+    color: #9f9f9f;
+    background-color: #68686869;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: .1s ease-in;
+    font-family: revert;
+    font-weight: 600;
+    font-size: 13px;
+    width: 23vh;
+}
+
+a.video i {
+    width: 4vh;
+    margin-right: 5px;
+    /* Add some space between the icon and text */
+    text-decoration: none;
+}
+
+.links a:hover {
+    background-color: #5858582f;
+    border-radius: 50px;
+}
+
+.links a:active {
+    background-color: #5858586b;
+    border-radius: 50px;
+}
+
+@media (max-width: 767px) {
+    .links a.bell {
+        /* padding-top: 11px; */
+        margin: 0px 20px;
+        font-size: 14px;
+    }
+
+    .links a.upload,
+    .links a.video {
+        display: none;
+    }
+}
+
+
+/* For Webkit browsers (e.g., Chrome, Safari) */
+::-webkit-scrollbar {
+    width: 8px;
+    /* Set the width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    /* Set the background color of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #777777;
+    /* Set the color of the scrollbar thumb */
+    border-radius: 4px;
+    /* Add rounded corners to the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #707070;
+    /* Set the color of the thumb on hover */
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+    /* Hide the scrollbar buttons */
+}
+
+/* For Firefox */
+/* Note: Firefox supports scrollbar styling through the 'scrollbar-color' and 'scrollbar-width' properties, but these are not universally supported yet. So, you may not get the same level of customization as with Webkit browsers. */
